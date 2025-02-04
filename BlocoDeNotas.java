@@ -47,3 +47,44 @@ class Anotacao {
         return "ID: " + id + " | Data: " + dataCriacao + " | " + texto + (ativa ? "" : " (Removida)");
     }
 }
+
+// Classe que representa o bloco de notas
+class BlocoDeNotas {
+    private List<Anotacao> anotacoes;
+
+    public BlocoDeNotas() {
+        this.anotacoes = new ArrayList<>();
+    }
+
+    public void adicionarAnotacao(String texto) {
+        anotacoes.add(new Anotacao(texto));
+    }
+
+    public void editarAnotacao(int indice, String novoTexto) {
+        if (indice >= 0 && indice < anotacoes.size() && anotacoes.get(indice).isAtiva()) {
+            anotacoes.get(indice).setTexto(novoTexto);
+        } else {
+            System.out.println("Anotação não encontrada ou já removida.");
+        }
+    }
+
+    public void removerAnotacao(int indice) {
+        if (indice >= 0 && indice < anotacoes.size() && anotacoes.get(indice).isAtiva()) {
+            anotacoes.get(indice).desativar();
+        } else {
+            System.out.println("Anotação não encontrada ou já removida.");
+        }
+    }
+
+    public List<Anotacao> buscarAnotacoes(String textoBusca) {
+        return anotacoes.stream()
+                .filter(a -> a.isAtiva() && a.getTexto().toLowerCase().contains(textoBusca.toLowerCase()))
+                .collect(Collectors.toList());
+    }
+
+    public List<Anotacao> listarAnotacoes() {
+        return anotacoes.stream()
+                .filter(Anotacao::isAtiva)
+                .collect(Collectors.toList());
+    }
+}
